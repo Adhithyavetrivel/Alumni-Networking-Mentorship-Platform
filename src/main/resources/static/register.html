@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Alumni Networking Platform</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div id="navbar-placeholder"></div>
+
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5">
+          <div class="text-center mb-4">
+            <h3 class="fw-bold">Create an Account</h3>
+            <p class="text-muted small">Join our college network as a Student or Alumni Mentor</p>
+
+            <!-- Role Selector Nav -->
+            <ul class="nav nav-pills justify-content-center gap-2 mt-3" id="roleTabs" role="tablist">
+              <li class="nav-item">
+                <button class="nav-link active px-4 py-2 fw-semibold" id="student-tab" data-bs-toggle="pill" data-bs-target="#student-pane" type="button">
+                  <i class="bi bi-mortarboard me-2"></i>I am a Student
+                </button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link px-4 py-2 fw-semibold" id="alumni-tab" data-bs-toggle="pill" data-bs-target="#alumni-pane" type="button">
+                  <i class="bi bi-briefcase me-2"></i>I am an Alumni
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div id="register-error" class="alert alert-danger d-none py-2" role="alert"></div>
+
+          <div class="tab-content" id="roleTabsContent">
+            <!-- Student Registration Form -->
+            <div class="tab-pane fade show active" id="student-pane">
+              <form id="studentRegisterForm">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Full Name *</label>
+                    <input type="text" class="form-control" id="s_name" placeholder="e.g. Priya Nair" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Email Address *</label>
+                    <input type="email" class="form-control" id="s_email" placeholder="priya@student.com" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Password *</label>
+                    <input type="password" class="form-control" id="s_password" placeholder="Min 6 characters" minlength="6" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Register Number *</label>
+                    <input type="text" class="form-control" id="s_reg" placeholder="e.g. 21CS042" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Department *</label>
+                    <select class="form-select dept-select" id="s_dept" required>
+                      <option value="">Select Department...</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Expected Graduation Year *</label>
+                    <input type="number" class="form-control" id="s_year" placeholder="e.g. 2026" min="2024" max="2032" required>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label small fw-semibold">Technical Skills * (comma-separated)</label>
+                    <input type="text" class="form-control" id="s_skills" placeholder="e.g. Java, Spring Boot, MySQL, REST APIs" required>
+                    <div class="form-text">Used for rule-based mentor matching (50% weight)</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Areas of Interest *</label>
+                    <input type="text" class="form-control" id="s_interests" placeholder="e.g. Backend Development, Distributed Systems" required>
+                    <div class="form-text">Used for mentor matching (30% weight)</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Career Goal / Target Role *</label>
+                    <input type="text" class="form-control" id="s_goal" placeholder="e.g. Software Engineer" required>
+                    <div class="form-text">Used for mentor matching (20% weight)</div>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label small fw-semibold">Short Bio</label>
+                    <textarea class="form-control" id="s_bio" rows="2" placeholder="Tell alumni mentors about your background and what you want to learn..."></textarea>
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <button type="submit" id="s_submit" class="btn btn-primary w-100 py-2 fw-semibold">
+                    Complete Student Registration
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Alumni Registration Form -->
+            <div class="tab-pane fade" id="alumni-pane">
+              <form id="alumniRegisterForm">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Full Name *</label>
+                    <input type="text" class="form-control" id="a_name" placeholder="e.g. Rahul Sharma" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Email Address *</label>
+                    <input type="email" class="form-control" id="a_email" placeholder="rahul@company.com" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Password *</label>
+                    <input type="password" class="form-control" id="a_password" placeholder="Min 6 characters" minlength="6" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Graduation Year *</label>
+                    <input type="number" class="form-control" id="a_year" placeholder="e.g. 2018" min="1980" max="2025" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Department *</label>
+                    <select class="form-select dept-select" id="a_dept" required>
+                      <option value="">Select Department...</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Current Company *</label>
+                    <input type="text" class="form-control" id="a_company" placeholder="e.g. Google, Microsoft, Amazon" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Current Job Role *</label>
+                    <input type="text" class="form-control" id="a_jobRole" placeholder="e.g. Senior Software Engineer" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Years of Experience *</label>
+                    <input type="number" class="form-control" id="a_experience" placeholder="e.g. 5" min="0" max="50" required>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label small fw-semibold">Skills * (comma-separated)</label>
+                    <input type="text" class="form-control" id="a_skills" placeholder="e.g. Java, Spring Boot, AWS, Microservices" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Areas of Expertise *</label>
+                    <input type="text" class="form-control" id="a_expertise" placeholder="e.g. Backend Development, System Design" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">LinkedIn Profile URL</label>
+                    <input type="url" class="form-control" id="a_linkedin" placeholder="https://linkedin.com/in/username">
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label small fw-semibold">Professional Bio</label>
+                    <textarea class="form-control" id="a_bio" rows="2" placeholder="Describe your industry experience and mentorship style..."></textarea>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="a_available" checked>
+                      <label class="form-check-label small fw-semibold" for="a_available">
+                        Available for student mentorship requests
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <button type="submit" id="a_submit" class="btn btn-primary w-100 py-2 fw-semibold">
+                    Complete Alumni Registration
+                  </button>
+                  <div class="text-muted small text-center mt-2">
+                    <i class="bi bi-info-circle me-1"></i> Alumni accounts require administrative verification before appearing in active mentor searches.
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="text-center mt-4 pt-3 border-top">
+            <span class="text-muted small">Already have an account? </span>
+            <a href="/login.html" class="fw-semibold text-decoration-none">Sign in here</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center">
+    <div class="container">
+      <p class="mb-0">&copy; 2026 Alumni Networking & Mentorship Platform</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      API.renderNavbar('register');
+      await loadDepartments();
+    });
+
+    async function loadDepartments() {
+      try {
+        const depts = await API.get('/api/departments');
+        const selects = document.querySelectorAll('.dept-select');
+        selects.forEach(select => {
+          select.innerHTML = '<option value="">Select Department...</option>';
+          depts.forEach(d => {
+            select.innerHTML += `<option value="${d.name}">${d.name} (${d.code})</option>`;
+          });
+        });
+      } catch (err) {
+        console.warn('Could not load departments dynamically, using fallback', err);
+      }
+    }
+
+    // Handle Student Registration
+    document.getElementById('studentRegisterForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errBox = document.getElementById('register-error');
+      errBox.classList.add('d-none');
+
+      const payload = {
+        name: document.getElementById('s_name').value.trim(),
+        email: document.getElementById('s_email').value.trim(),
+        password: document.getElementById('s_password').value,
+        registerNumber: document.getElementById('s_reg').value.trim(),
+        department: document.getElementById('s_dept').value,
+        graduationYear: parseInt(document.getElementById('s_year').value),
+        skills: document.getElementById('s_skills').value.trim(),
+        interests: document.getElementById('s_interests').value.trim(),
+        careerGoal: document.getElementById('s_goal').value.trim(),
+        bio: document.getElementById('s_bio').value.trim()
+      };
+
+      try {
+        const res = await API.post('/api/auth/register/student', payload);
+        API.setCurrentUser(res);
+        window.location.href = '/student-dashboard.html';
+      } catch (err) {
+        errBox.textContent = err.message || 'Registration failed.';
+        errBox.classList.remove('d-none');
+      }
+    });
+
+    // Handle Alumni Registration
+    document.getElementById('alumniRegisterForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errBox = document.getElementById('register-error');
+      errBox.classList.add('d-none');
+
+      const payload = {
+        name: document.getElementById('a_name').value.trim(),
+        email: document.getElementById('a_email').value.trim(),
+        password: document.getElementById('a_password').value,
+        department: document.getElementById('a_dept').value,
+        graduationYear: parseInt(document.getElementById('a_year').value),
+        company: document.getElementById('a_company').value.trim(),
+        jobRole: document.getElementById('a_jobRole').value.trim(),
+        experience: parseInt(document.getElementById('a_experience').value),
+        skills: document.getElementById('a_skills').value.trim(),
+        expertise: document.getElementById('a_expertise').value.trim(),
+        linkedinUrl: document.getElementById('a_linkedin').value.trim(),
+        bio: document.getElementById('a_bio').value.trim(),
+        availableForMentoring: document.getElementById('a_available').checked
+      };
+
+      try {
+        const res = await API.post('/api/auth/register/alumni', payload);
+        API.setCurrentUser(res);
+        window.location.href = '/alumni-dashboard.html';
+      } catch (err) {
+        errBox.textContent = err.message || 'Registration failed.';
+        errBox.classList.remove('d-none');
+      }
+    });
+  </script>
+</body>
+</html>

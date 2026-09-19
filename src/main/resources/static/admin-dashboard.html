@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Alumni Networking</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div id="navbar-placeholder"></div>
+
+  <div class="dashboard-container">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="fw-bold mb-1">Administrative Overview</h2>
+          <p class="text-muted mb-0">System metrics, verification queue, user management, and mentorship analytics.</p>
+        </div>
+      </div>
+
+      <!-- Stat Cards Grid -->
+      <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-3">
+          <div class="stat-card">
+            <div>
+              <div class="stat-number text-primary" id="statStudents">0</div>
+              <div class="stat-label">Total Students</div>
+            </div>
+            <div class="stat-icon-wrapper bg-primary-subtle text-primary">
+              <i class="bi bi-mortarboard-fill"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+          <div class="stat-card">
+            <div>
+              <div class="stat-number text-success" id="statAlumni">0</div>
+              <div class="stat-label">Total Alumni</div>
+            </div>
+            <div class="stat-icon-wrapper bg-success-subtle text-success">
+              <i class="bi bi-briefcase-fill"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+          <div class="stat-card">
+            <div>
+              <div class="stat-number text-warning" id="statPendingVerif">0</div>
+              <div class="stat-label">Pending Verification</div>
+            </div>
+            <div class="stat-icon-wrapper bg-warning-subtle text-warning">
+              <i class="bi bi-shield-exclamation"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+          <div class="stat-card">
+            <div>
+              <div class="stat-number text-info" id="statActiveMentorships">0</div>
+              <div class="stat-label">Active Mentorships</div>
+            </div>
+            <div class="stat-icon-wrapper bg-info-subtle text-info">
+              <i class="bi bi-link-45deg"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-4">
+          <div class="stat-card">
+            <div>
+              <div class="stat-number text-success" id="statVerifiedAlumni">0</div>
+              <div class="stat-label">Verified Alumni</div>
+            </div>
+            <div class="stat-icon-wrapper bg-success-subtle text-success">
+              <i class="bi bi-patch-check-fill"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl-4">
+          <div class="stat-card">
+            <div>
+              <div class="stat-number text-secondary" id="statCompletedSessions">0</div>
+              <div class="stat-label">Completed Sessions</div>
+            </div>
+            <div class="stat-icon-wrapper bg-secondary-subtle text-secondary">
+              <i class="bi bi-check2-all"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl-4">
+          <div class="stat-card">
+            <div>
+              <div class="stat-number text-danger" id="statPendingReports">0</div>
+              <div class="stat-label">Pending Reports</div>
+            </div>
+            <div class="stat-icon-wrapper bg-danger-subtle text-danger">
+              <i class="bi bi-flag-fill"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+          <div class="card-custom h-100">
+            <div class="card-header">
+              <span><i class="bi bi-pie-chart text-primary me-2"></i>User Distribution (Students vs Alumni)</span>
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center" style="min-height: 280px;">
+              <canvas id="userDistChart" style="max-height: 260px; max-width: 320px;"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="card-custom h-100">
+            <div class="card-header">
+              <span><i class="bi bi-bar-chart text-success me-2"></i>Platform Engagement Summary</span>
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center" style="min-height: 280px;">
+              <canvas id="engagementChart" style="max-height: 260px; width: 100%;"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="card-custom">
+        <div class="card-header">
+          <span><i class="bi bi-lightning text-warning me-2"></i>Administrative Actions</span>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <a href="/manage-alumni.html" class="btn btn-outline-primary w-100 p-3 text-start rounded-3">
+                <div class="fw-bold"><i class="bi bi-patch-check me-2"></i>Verify Alumni Profiles</div>
+                <small class="text-muted">Approve newly registered alumni for active mentorship</small>
+              </a>
+            </div>
+            <div class="col-md-4">
+              <a href="/manage-students.html" class="btn btn-outline-secondary w-100 p-3 text-start rounded-3">
+                <div class="fw-bold"><i class="bi bi-people me-2"></i>Audit Student Directory</div>
+                <small class="text-muted">Review student profiles and academic enrollments</small>
+              </a>
+            </div>
+            <div class="col-md-4">
+              <a href="/manage-reports.html" class="btn btn-outline-danger w-100 p-3 text-start rounded-3">
+                <div class="fw-bold"><i class="bi bi-shield-exclamation me-2"></i>Review Safety Reports</div>
+                <small class="text-muted">Investigate reported accounts and profile flags</small>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = API.requireAuth(['ADMIN']);
+      if (!user) return;
+
+      API.renderNavbar();
+      API.renderSidebar('ADMIN', 'dashboard');
+      await loadAdminStats();
+    });
+
+    async function loadAdminStats() {
+      try {
+        const stats = await API.get('/api/admin/dashboard');
+        document.getElementById('statStudents').textContent = stats.totalStudents || 0;
+        document.getElementById('statAlumni').textContent = stats.totalAlumni || 0;
+        document.getElementById('statVerifiedAlumni').textContent = stats.verifiedAlumni || 0;
+        document.getElementById('statPendingVerif').textContent = stats.pendingVerification || 0;
+        document.getElementById('statActiveMentorships').textContent = stats.activeMentorships || 0;
+        document.getElementById('statCompletedSessions').textContent = stats.completedSessions || 0;
+        document.getElementById('statPendingReports').textContent = stats.pendingReports || 0;
+
+        renderCharts(stats);
+      } catch (err) {
+        console.error('Failed to load admin stats', err);
+      }
+    }
+
+    function renderCharts(stats) {
+      // 1. User Distribution Doughnut Chart
+      const ctx1 = document.getElementById('userDistChart').getContext('2d');
+      new Chart(ctx1, {
+        type: 'doughnut',
+        data: {
+          labels: ['Students', 'Verified Alumni', 'Pending Alumni'],
+          datasets: [{
+            data: [stats.totalStudents, stats.verifiedAlumni, stats.pendingVerification],
+            backgroundColor: ['#2563eb', '#10b981', '#f59e0b'],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' }
+          }
+        }
+      });
+
+      // 2. Engagement Bar Chart
+      const ctx2 = document.getElementById('engagementChart').getContext('2d');
+      new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: ['Active Mentorships', 'Completed Sessions', 'Pending Reports'],
+          datasets: [{
+            label: 'Counts',
+            data: [stats.activeMentorships, stats.completedSessions, stats.pendingReports],
+            backgroundColor: ['#3b82f6', '#10b981', '#ef4444'],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 } }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

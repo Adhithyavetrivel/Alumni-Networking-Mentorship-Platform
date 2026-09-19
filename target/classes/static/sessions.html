@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Mentoring Sessions - Alumni Networking</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <div id="navbar-placeholder"></div>
+
+  <div class="dashboard-container">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="fw-bold mb-1">My Mentoring Sessions</h2>
+          <p class="text-muted mb-0">Manage 1-on-1 sessions with your mentors and provide session feedback.</p>
+        </div>
+        <button class="btn btn-primary" onclick="openScheduleModal()">
+          <i class="bi bi-calendar-plus me-1"></i> Request New Session
+        </button>
+      </div>
+
+      <div class="card-custom">
+        <div class="card-header">
+          <span><i class="bi bi-calendar3 text-primary me-2"></i>Scheduled Sessions</span>
+        </div>
+        <div class="card-body p-0">
+          <div id="sessionsLoading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+
+          <div class="table-responsive d-none" id="sessionsTableContainer">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th class="ps-4">Topic</th>
+                  <th>Mentor</th>
+                  <th>Date & Time</th>
+                  <th>Status</th>
+                  <th>Feedback / Rating</th>
+                  <th class="text-end pe-4">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="sessionsTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+
+          <div id="noSessions" class="text-center py-5 d-none">
+            <i class="bi bi-calendar-x text-muted fs-1 mb-2"></i>
+            <h5>No sessions scheduled yet</h5>
+            <p class="text-muted small">Connect with an accepted mentor to schedule your first 1-on-1 mentoring session.</p>
+            <button class="btn btn-outline-primary btn-sm" onclick="openScheduleModal()">Schedule Session</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Schedule Session Modal -->
+  <div class="modal fade" id="scheduleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold"><i class="bi bi-calendar-plus-fill text-primary me-2"></i>Request Mentoring Session</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="scheduleForm">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Select Accepted Mentor *</label>
+              <select class="form-select" id="sess_request" required>
+                <option value="">Loading accepted mentors...</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Session Topic *</label>
+              <input type="text" class="form-control" id="sess_topic" placeholder="e.g. Mock Technical Interview, Resume Review" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Preferred Date & Time *</label>
+              <input type="datetime-local" class="form-control" id="sess_date" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Discussion Points / Agenda</label>
+              <textarea class="form-control" id="sess_desc" rows="3" placeholder="Topics you would like to cover in the session..."></textarea>
+            </div>
+            <div class="modal-footer border-top px-0 pb-0">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Schedule Session</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback Modal -->
+  <div class="modal fade" id="feedbackModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold"><i class="bi bi-star-fill text-warning me-2"></i>Submit Session Feedback</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="fb_sessionId">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Rate Your Mentoring Experience *</label>
+            <select class="form-select" id="fb_rating" required>
+              <option value="5">⭐⭐⭐⭐⭐ (5/5) Excellent & highly actionable</option>
+              <option value="4">⭐⭐⭐⭐ (4/5) Very helpful and informative</option>
+              <option value="3">⭐⭐⭐ (3/5) Average / Satisfactory</option>
+              <option value="2">⭐⭐ (2/5) Needs improvement</option>
+              <option value="1">⭐ (1/5) Poor experience</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Review / Comments *</label>
+            <textarea class="form-control" id="fb_comment" rows="3" placeholder="Share how this session helped your career preparation or learning goals..." required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer border-top">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="submitFeedback()">Submit Feedback</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/api.js"></script>
+  <script>
+    let userSessions = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = API.requireAuth(['STUDENT', 'ADMIN']);
+      if (!user) return;
+
+      API.renderNavbar('sessions');
+      API.renderSidebar('STUDENT', 'sessions');
+
+      await loadSessions();
+
+      // Check query param for auto-open modal
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('reqId')) {
+        openScheduleModal(urlParams.get('reqId'));
+      }
+    });
+
+    async function loadSessions() {
+      try {
+        userSessions = await API.get('/api/sessions');
+        document.getElementById('sessionsLoading').classList.add('d-none');
+        renderSessionsTable();
+      } catch (err) {
+        document.getElementById('sessionsLoading').innerHTML = `<p class="text-danger small">Failed to load sessions: ${err.message}</p>`;
+      }
+    }
+
+    function renderSessionsTable() {
+      const container = document.getElementById('sessionsTableContainer');
+      const tbody = document.getElementById('sessionsTableBody');
+      const noSess = document.getElementById('noSessions');
+
+      if (userSessions.length === 0) {
+        container.classList.add('d-none');
+        noSess.classList.remove('d-none');
+        return;
+      }
+
+      container.classList.remove('d-none');
+      noSess.classList.add('d-none');
+
+      tbody.innerHTML = userSessions.map(s => {
+        let badgeClass = 'badge-pending';
+        if (s.status === 'CONFIRMED') badgeClass = 'badge-confirmed';
+        else if (s.status === 'COMPLETED') badgeClass = 'badge-completed';
+        else if (s.status === 'CANCELLED') badgeClass = 'badge-cancelled';
+
+        let fbHtml = '';
+        if (s.status === 'COMPLETED') {
+          if (s.feedbackSubmitted) {
+            fbHtml = `<span class="text-warning">★ ${s.rating}/5</span> <span class="text-muted small">Submitted</span>`;
+          } else {
+            fbHtml = `<button class="btn btn-sm btn-outline-warning" onclick="openFeedbackModal(${s.id})"><i class="bi bi-star me-1"></i>Give Feedback</button>`;
+          }
+        } else {
+          fbHtml = `<span class="text-muted small">Available after completion</span>`;
+        }
+
+        let actionHtml = '';
+        if (s.status === 'REQUESTED' || s.status === 'CONFIRMED') {
+          actionHtml = `
+            <button class="btn btn-sm btn-outline-success me-1" onclick="markComplete(${s.id})"><i class="bi bi-check2"></i> Mark Done</button>
+            <button class="btn btn-sm btn-outline-danger" onclick="cancelSession(${s.id})"><i class="bi bi-x"></i> Cancel</button>
+          `;
+        }
+
+        return `
+          <tr>
+            <td class="ps-4">
+              <div class="fw-bold">${s.topic}</div>
+              <div class="text-muted small text-truncate" style="max-width: 200px;">${s.description || 'No description'}</div>
+            </td>
+            <td>
+              <div class="fw-semibold">${s.alumniName}</div>
+              <div class="text-muted small">${s.alumniCompany}</div>
+            </td>
+            <td>
+              <div class="text-primary fw-medium">${API.formatDate(s.sessionDate)}</div>
+            </td>
+            <td>
+              <span class="badge ${badgeClass}">${s.status}</span>
+            </td>
+            <td>
+              ${fbHtml}
+            </td>
+            <td class="text-end pe-4">
+              ${actionHtml}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function openScheduleModal(preselectedReqId = null) {
+      const select = document.getElementById('sess_request');
+      select.innerHTML = '<option value="">Select an accepted mentor...</option>';
+
+      try {
+        const requests = await API.get('/api/mentorship/student');
+        const accepted = requests.filter(r => r.status === 'ACCEPTED');
+
+        if (accepted.length === 0) {
+          alert('You do not have any accepted mentorship requests yet. Please find and connect with an alumni first.');
+          return;
+        }
+
+        accepted.forEach(r => {
+          const selected = (preselectedReqId && String(r.id) === String(preselectedReqId)) ? 'selected' : '';
+          select.innerHTML += `<option value="${r.id}" ${selected}>${r.alumniName} (${r.alumniJobRole} at ${r.alumniCompany})</option>`;
+        });
+
+        // Default date to tomorrow at 18:00
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(18, 0, 0, 0);
+        document.getElementById('sess_date').value = tomorrow.toISOString().slice(0, 16);
+
+        const modal = new bootstrap.Modal(document.getElementById('scheduleModal'));
+        modal.show();
+      } catch (err) {
+        alert('Failed to load mentors: ' + err.message);
+      }
+    }
+
+    document.getElementById('scheduleForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const mentorshipRequestId = document.getElementById('sess_request').value;
+      const topic = document.getElementById('sess_topic').value.trim();
+      const sessionDate = document.getElementById('sess_date').value;
+      const description = document.getElementById('sess_desc').value.trim();
+
+      try {
+        await API.post('/api/sessions', {
+          mentorshipRequestId,
+          topic,
+          sessionDate,
+          description
+        });
+        API.showToast('Session scheduled successfully!', 'success');
+        bootstrap.Modal.getInstance(document.getElementById('scheduleModal')).hide();
+        await loadSessions();
+      } catch (err) {
+        alert(err.message || 'Failed to schedule session.');
+      }
+    });
+
+    function openFeedbackModal(sessionId) {
+      document.getElementById('fb_sessionId').value = sessionId;
+      document.getElementById('fb_comment').value = '';
+      const modal = new bootstrap.Modal(document.getElementById('feedbackModal'));
+      modal.show();
+    }
+
+    async function submitFeedback() {
+      const sessionId = document.getElementById('fb_sessionId').value;
+      const rating = parseInt(document.getElementById('fb_rating').value);
+      const comment = document.getElementById('fb_comment').value.trim();
+
+      if (!comment) {
+        alert('Please provide a comment for your feedback.');
+        return;
+      }
+
+      try {
+        await API.post('/api/feedback', {
+          sessionId,
+          rating,
+          comment
+        });
+        API.showToast('Feedback submitted successfully! Thank you.', 'success');
+        bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
+        await loadSessions();
+      } catch (err) {
+        alert(err.message || 'Failed to submit feedback.');
+      }
+    }
+
+    async function markComplete(sessionId) {
+      if (!confirm('Mark this session as completed?')) return;
+      try {
+        await API.put(`/api/sessions/${sessionId}/complete`);
+        API.showToast('Session completed.', 'success');
+        await loadSessions();
+      } catch (err) {
+        alert(err.message || 'Failed to complete session.');
+      }
+    }
+
+    async function cancelSession(sessionId) {
+      if (!confirm('Are you sure you want to cancel this session?')) return;
+      try {
+        await API.put(`/api/sessions/${sessionId}/cancel`);
+        API.showToast('Session cancelled.', 'info');
+        await loadSessions();
+      } catch (err) {
+        alert(err.message || 'Failed to cancel session.');
+      }
+    }
+  </script>
+</body>
+</html>
