@@ -6,7 +6,7 @@
 
 ## 1. Project Overview
 
-The **Alumni Networking & Mentorship Platform** bridges the communication gap between university students and graduated alumni working across top global companies (Google, Microsoft, Amazon, Meta, Apple, Uber, TCS, Infosys).
+The **Alumni Networking & Mentorship Platform** bridges the communication gap between university students and graduated alumni working across top global companies.
 
 ### Core Highlights
 - **Role-Based Portals**: Dedicated, interactive dashboards and workflows for **Students**, **Alumni**, and **Administrators**.
